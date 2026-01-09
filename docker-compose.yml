@@ -1,0 +1,80 @@
+services:
+  # ================================
+  # Dolesa Eco Learning Web App
+  # ================================
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dolesa-eco-learning:latest
+    container_name: dolesa-web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - dolesa-network
+    # Resource limits (adjust as needed)
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # ================================
+  # Development mode service
+  # ================================
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: dolesa-eco-learning:dev
+    container_name: dolesa-dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - WATCHPACK_POLLING=true
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    networks:
+      - dolesa-network
+    profiles:
+      - dev
+
+  # ================================
+  # Nginx Reverse Proxy (optional)
+  # ================================
+  nginx:
+    image: nginx:alpine
+    container_name: dolesa-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - web
+    networks:
+      - dolesa-network
+    profiles:
+      - production
+
+networks:
+  dolesa-network:
+    driver: bridge
