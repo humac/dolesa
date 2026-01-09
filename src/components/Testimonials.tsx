@@ -135,7 +135,7 @@ export default function Testimonials() {
 
                 {/* Content */}
                 <blockquote className="text-xl lg:text-2xl text-white/90 leading-relaxed mb-8 font-light">
-                  "{testimonials[activeIndex].content}"
+                  &quot;{testimonials[activeIndex].content}&quot;
                 </blockquote>
 
                 {/* Author */}
@@ -223,7 +223,7 @@ export default function Testimonials() {
                 </div>
               </div>
               <p className="text-sm text-white/70 line-clamp-2">
-                "{testimonial.content}"
+                &quot;{testimonial.content}&quot;
               </p>
             </motion.div>
           ))}

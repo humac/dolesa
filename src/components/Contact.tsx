@@ -80,8 +80,8 @@ export default function Contact() {
           </h2>
 
           <p className="text-lg text-gray-600 dark:text-gray-400 text-balance">
-            Have questions? Want to partner with us? We'd love to hear from you.
-            Let's create sustainable change together.
+            Have questions? Want to partner with us? We&apos;d love to hear from you.
+            Let&apos;s create sustainable change together.
           </p>
         </motion.div>
 
