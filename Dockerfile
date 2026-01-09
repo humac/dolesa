@@ -3,7 +3,7 @@
 # ================================
 # Base stage with Node.js
 # ================================
-FROM node:20-alpine AS base
+FROM node:25-alpine AS base
 
 # Install dependencies only when needed
 RUN apk add --no-cache libc6-compat
